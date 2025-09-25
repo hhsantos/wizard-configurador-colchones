@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import WizardStep from './WizardStep';
 import ProgressIndicator from './ProgressIndicator';
 import Navigation from './Navigation';
+import DarkModeToggle from '../ui/DarkModeToggle';
 
 // Importar steps
 import WelcomeStep from '../steps/WelcomeStep';
@@ -75,13 +76,18 @@ const WizardContainer = () => {
       {/* Skip to content link - AGENTS.md requirement */}
       <a 
         href="#main-content" 
-        className="sr-only focus:not-sr-only fixed left-2 top-2 z-[999] px-4 py-2 bg-black text-white no-underline rounded"
+        className="sr-only focus:not-sr-only fixed left-2 top-2 z-[999] px-4 py-2 bg-primary text-primary-foreground no-underline rounded shadow-lg"
       >
         Saltar al contenido principal
       </a>
 
-      <header className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Configurador de Colchones</h1>
+      <header className="mb-8 text-center relative">
+        {/* Dark mode toggle - positioned in top right */}
+        <div className="absolute right-0 top-0">
+          <DarkModeToggle />
+        </div>
+        
+        <h1 className="text-3xl font-bold text-foreground mb-4">Configurador de Colchones</h1>
         <ProgressIndicator />
       </header>
       
