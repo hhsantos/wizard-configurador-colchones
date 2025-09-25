@@ -1,4 +1,6 @@
 import { useWizard } from '../../contexts/WizardContext';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 const MaterialsStep = () => {
   const { answers, setAnswer } = useWizard();

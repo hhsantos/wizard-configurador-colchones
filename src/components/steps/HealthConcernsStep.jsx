@@ -1,4 +1,6 @@
 import { useWizard } from '../../contexts/WizardContext';
+import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 const HealthConcernsStep = () => {
   const { answers, setAnswer } = useWizard();
@@ -72,59 +74,99 @@ const HealthConcernsStep = () => {
   const selectedConcerns = answers.healthConcerns || [];
 
   return (
-    <div className="health-concerns-step">
-      <p className="step-description">
-        Selecciona cualquier condición que pueda afectar tu calidad de sueño. 
-        <strong> Esta información es opcional pero nos ayuda a hacer mejores recomendaciones.</strong>
-      </p>
+    <div className="space-y-6">
+      <div className="text-center">
+        <p className="text-gray-600 mb-2">
+          Selecciona cualquier condición que pueda afectar tu calidad de sueño.
+        </p>
+        <p className="text-blue-600 font-medium text-sm">
+          Esta información es opcional pero nos ayuda a hacer mejores recomendaciones.
+        </p>
+      </div>
       
-      <fieldset className="options-fieldset">
+      <fieldset className="space-y-4">
         <legend className="sr-only">Selecciona tus consideraciones de salud</legend>
         
-        <div className="concerns-grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {healthConcerns.map((concern) => {
             const isSelected = selectedConcerns.includes(concern.value);
             const isNone = concern.value === 'ninguno';
             
             return (
-              <label 
+              <Card
                 key={concern.value}
-                className={`concern-card ${isSelected ? 'selected' : ''} ${isNone ? 'none-option' : ''}`}
-              >
-                <input
-                  type="checkbox"
-                  name="healthConcerns"
-                  value={concern.value}
-                  checked={isSelected}
-                  onChange={() => handleConcernToggle(concern.value)}
-                  className="option-input sr-only"
-                />
-                <div className="concern-content">
-                  <span className="concern-icon" aria-hidden="true">
-                    {concern.icon}
-                  </span>
-                  <div className="concern-info">
-                    <h4 className="concern-title">{concern.title}</h4>
-                    <p className="concern-description">{concern.description}</p>
-                    <small className="concern-recommendation">
-                      {concern.recommendation}
-                    </small>
-                  </div>
-                </div>
-                {isSelected && (
-                  <span className="selected-indicator" aria-hidden="true">
-                    ✓
-                  </span>
+                className={cn(
+                  "cursor-pointer transition-all duration-200 min-h-[140px]",
+                  "hover:shadow-md hover:scale-105",
+                  "border-2 relative",
+                  isNone && "border-dashed",
+                  isSelected 
+                    ? isNone 
+                      ? "border-gray-500 bg-gray-50 shadow-md"
+                      : "border-red-500 bg-red-50 shadow-md"
+                    : "border-gray-200 hover:border-gray-300"
                 )}
-              </label>
+                onClick={() => handleConcernToggle(concern.value)}
+                style={{ touchAction: 'manipulation' }}
+              >
+                <CardContent className="p-4">
+                  <input
+                    type="checkbox"
+                    name="healthConcerns"
+                    value={concern.value}
+                    checked={isSelected}
+                    onChange={() => handleConcernToggle(concern.value)}
+                    className="sr-only"
+                  />
+                  <div className="space-y-3 h-full flex flex-col">
+                    <div className="flex items-center justify-between">
+                      <div className="text-2xl" aria-hidden="true">
+                        {concern.icon}
+                      </div>
+                      {isSelected && (
+                        <div className={cn(
+                          "w-6 h-6 rounded-full flex items-center justify-center",
+                          isNone ? "bg-gray-500" : "bg-red-500"
+                        )}>
+                          <span className="text-white text-sm font-bold" aria-hidden="true">
+                            ✓
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-gray-900 mb-1">
+                        {concern.title}
+                      </h4>
+                      <p className="text-sm text-gray-600 mb-2">
+                        {concern.description}
+                      </p>
+                      <small className={cn(
+                        "text-xs italic block",
+                        isNone ? "text-gray-600" : "text-red-600"
+                      )}>
+                        {concern.recommendation}
+                      </small>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             );
           })}
         </div>
       </fieldset>
       
       {selectedConcerns.length > 0 && (
-        <div className="selection-summary" aria-live="polite">
-          <p>
+        <div 
+          className={cn(
+            "text-center p-3 border rounded-lg",
+            selectedConcerns.includes('ninguno') 
+              ? "bg-gray-50 border-gray-200 text-gray-800"
+              : "bg-red-50 border-red-200 text-red-800"
+          )}
+          aria-live="polite"
+        >
+          <p className="font-medium">
             {selectedConcerns.includes('ninguno') 
               ? 'Sin preocupaciones especiales seleccionadas'
               : `Has seleccionado: ${selectedConcerns.length} consideración${selectedConcerns.length > 1 ? 'es' : ''}`
