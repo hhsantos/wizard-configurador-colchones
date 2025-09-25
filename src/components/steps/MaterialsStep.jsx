@@ -58,66 +58,103 @@ const MaterialsStep = () => {
   ];
 
   return (
-    <div className="materials-step">
-      <p className="step-description">
+    <div className="space-y-6">
+      <p className="text-gray-600 text-center mb-6">
         Cada material ofrece beneficios únicos. Considera tus necesidades de temperatura, 
         soporte y sensación al tacto.
       </p>
       
-      <fieldset className="options-fieldset">
+      <fieldset className="space-y-4">
         <legend className="sr-only">Selecciona tu material preferido</legend>
         
-        <div className="materials-grid">
-          {materials.map((material) => (
-            <label 
-              key={material.value}
-              className={`material-card ${answers.materialPreference === material.value ? 'selected' : ''}`}
-            >
-              <input
-                type="radio"
-                name="materialPreference"
-                value={material.value}
-                checked={answers.materialPreference === material.value}
-                onChange={() => handleMaterialChange(material.value)}
-                className="option-input sr-only"
-              />
-              <div className="material-content">
-                <div className="material-header">
-                  <span className="material-icon" aria-hidden="true">
-                    {material.icon}
-                  </span>
-                  <div>
-                    <h4 className="material-title">{material.title}</h4>
-                    <p className="material-description">{material.description}</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {materials.map((material) => {
+            const isSelected = answers.materialPreference === material.value;
+            
+            return (
+              <Card
+                key={material.value}
+                className={cn(
+                  "cursor-pointer transition-all duration-200 min-h-[280px]",
+                  "hover:shadow-lg hover:scale-105",
+                  "border-2",
+                  isSelected 
+                    ? "border-indigo-500 bg-indigo-50 shadow-lg" 
+                    : "border-gray-200 hover:border-gray-300"
+                )}
+                onClick={() => handleMaterialChange(material.value)}
+                style={{ touchAction: 'manipulation' }}
+              >
+                <CardHeader className="pb-3">
+                  <input
+                    type="radio"
+                    name="materialPreference"
+                    value={material.value}
+                    checked={isSelected}
+                    onChange={() => handleMaterialChange(material.value)}
+                    className="sr-only"
+                  />
+                  <div className="flex items-center gap-3">
+                    <div className="text-3xl" aria-hidden="true">
+                      {material.icon}
+                    </div>
+                    <div className="flex-1">
+                      <CardTitle className="text-lg font-semibold text-gray-900">
+                        {material.title}
+                      </CardTitle>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {material.description}
+                      </p>
+                    </div>
+                    {isSelected && (
+                      <div className="w-6 h-6 bg-indigo-500 rounded-full flex items-center justify-center">
+                        <span className="text-white text-sm font-bold" aria-hidden="true">
+                          ✓
+                        </span>
+                      </div>
+                    )}
                   </div>
-                </div>
+                </CardHeader>
                 
-                <div className="material-details">
-                  <div className="pros-cons">
-                    <div className="pros">
-                      <h5>✅ Ventajas:</h5>
-                      <ul>
+                <CardContent className="pt-0 space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <h5 className="text-sm font-medium text-green-700 mb-2 flex items-center">
+                        <span className="mr-1">✅</span> Ventajas:
+                      </h5>
+                      <ul className="text-xs text-gray-600 space-y-1">
                         {material.pros.map((pro, index) => (
-                          <li key={index}>{pro}</li>
+                          <li key={index} className="flex items-start">
+                            <span className="text-green-500 mr-1 mt-0.5">•</span>
+                            {pro}
+                          </li>
                         ))}
                       </ul>
                     </div>
-                    <div className="cons">
-                      <h5>⚠️ Consideraciones:</h5>
-                      <ul>
+                    <div>
+                      <h5 className="text-sm font-medium text-orange-700 mb-2 flex items-center">
+                        <span className="mr-1">⚠️</span> Consideraciones:
+                      </h5>
+                      <ul className="text-xs text-gray-600 space-y-1">
                         {material.cons.map((con, index) => (
-                          <li key={index}>{con}</li>
+                          <li key={index} className="flex items-start">
+                            <span className="text-orange-500 mr-1 mt-0.5">•</span>
+                            {con}
+                          </li>
                         ))}
                       </ul>
                     </div>
                   </div>
-                  <div className="best-for">
-                    <strong>Ideal para:</strong> {material.bestFor}
+                  <div className="pt-2 border-t border-gray-200">
+                    <p className="text-sm">
+                      <span className="font-medium text-indigo-700">Ideal para:</span>{' '}
+                      <span className="text-gray-700">{material.bestFor}</span>
+                    </p>
                   </div>
-                </div>
-              </div>
-            </label>
-          ))}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </fieldset>
     </div>

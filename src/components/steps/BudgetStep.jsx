@@ -1,4 +1,6 @@
 import { useWizard } from '../../contexts/WizardContext';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 const BudgetStep = () => {
   const { answers, setAnswer } = useWizard();
@@ -56,67 +58,117 @@ const BudgetStep = () => {
   ];
 
   return (
-    <div className="budget-step">
-      <p className="step-description">
-        Selecciona el rango de presupuesto que mejor se adapte a ti. 
-        <strong> Recuerda que un buen colchón es una inversión en tu salud y bienestar.</strong>
-      </p>
+    <div className="space-y-6">
+      <div className="text-center">
+        <p className="text-gray-600 mb-2">
+          Selecciona el rango de presupuesto que mejor se adapte a ti.
+        </p>
+        <p className="text-blue-600 font-medium">
+          Recuerda que un buen colchón es una inversión en tu salud y bienestar.
+        </p>
+      </div>
       
-      <fieldset className="options-fieldset">
+      <fieldset className="space-y-4">
         <legend className="sr-only">Selecciona tu rango de presupuesto</legend>
         
-        <div className="budget-options">
-          {budgetRanges.map((budget) => (
-            <label 
-              key={budget.value}
-              className={`budget-card ${answers.budget === budget.value ? 'selected' : ''}`}
-            >
-              <input
-                type="radio"
-                name="budget"
-                value={budget.value}
-                checked={answers.budget === budget.value}
-                onChange={() => handleBudgetChange(budget.value)}
-                className="option-input sr-only"
-              />
-              <div className="budget-content">
-                <div className="budget-header">
-                  <span className="budget-icon" aria-hidden="true">
-                    {budget.icon}
-                  </span>
-                  <div className="budget-info">
-                    <h4 className="budget-title">{budget.title}</h4>
-                    <p className="budget-range">{budget.range}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {budgetRanges.map((budget) => {
+            const isSelected = answers.budget === budget.value;
+            const isNoLimit = budget.value === 'sin-limite';
+            
+            return (
+              <Card
+                key={budget.value}
+                className={cn(
+                  "cursor-pointer transition-all duration-200 min-h-[200px]",
+                  "hover:shadow-lg hover:scale-105",
+                  "border-2",
+                  isNoLimit && "border-dashed",
+                  isSelected 
+                    ? isNoLimit
+                      ? "border-gray-500 bg-gray-50 shadow-lg"
+                      : "border-emerald-500 bg-emerald-50 shadow-lg" 
+                    : "border-gray-200 hover:border-gray-300"
+                )}
+                onClick={() => handleBudgetChange(budget.value)}
+                style={{ touchAction: 'manipulation' }}
+              >
+                <CardHeader className="pb-3">
+                  <input
+                    type="radio"
+                    name="budget"
+                    value={budget.value}
+                    checked={isSelected}
+                    onChange={() => handleBudgetChange(budget.value)}
+                    className="sr-only"
+                  />
+                  <div className="flex items-center gap-3">
+                    <div className="text-2xl" aria-hidden="true">
+                      {budget.icon}
+                    </div>
+                    <div className="flex-1">
+                      <CardTitle className="text-lg font-semibold text-gray-900">
+                        {budget.title}
+                      </CardTitle>
+                      <p className={cn(
+                        "text-sm font-medium mt-1",
+                        isNoLimit ? "text-gray-600" : "text-emerald-600"
+                      )}>
+                        {budget.range}
+                      </p>
+                    </div>
+                    {isSelected && (
+                      <div className={cn(
+                        "w-6 h-6 rounded-full flex items-center justify-center",
+                        isNoLimit ? "bg-gray-500" : "bg-emerald-500"
+                      )}>
+                        <span className="text-white text-sm font-bold" aria-hidden="true">
+                          ✓
+                        </span>
+                      </div>
+                    )}
                   </div>
-                </div>
+                </CardHeader>
                 
-                <p className="budget-description">{budget.description}</p>
-                
-                <div className="budget-includes">
-                  <h5>Incluye:</h5>
-                  <ul>
-                    {budget.includes.map((item, index) => (
-                      <li key={index}>✓ {item}</li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <p className="budget-note">
-                  <em>{budget.note}</em>
-                </p>
-              </div>
-            </label>
-          ))}
+                <CardContent className="pt-0 space-y-3">
+                  <p className="text-sm text-gray-600">
+                    {budget.description}
+                  </p>
+                  
+                  <div>
+                    <h5 className="text-sm font-medium text-gray-900 mb-2">Incluye:</h5>
+                    <ul className="text-xs text-gray-600 space-y-1">
+                      {budget.includes.map((item, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="text-emerald-500 mr-2 mt-0.5">✓</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <p className="text-xs text-gray-500 italic pt-2 border-t border-gray-200">
+                    {budget.note}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </fieldset>
       
-      <div className="budget-tip">
-        <h4>💡 Consejo:</h4>
-        <p>
-          Un colchón de calidad dura 8-10 años. Divide el precio entre los días de uso 
-          para ver el coste real por noche de sueño reparador.
-        </p>
-      </div>
+      <Card className="bg-blue-50 border-blue-200">
+        <CardContent className="p-4">
+          <h4 className="font-medium text-blue-900 mb-2 flex items-center">
+            <span className="mr-2">💡</span>
+            Consejo de inversión:
+          </h4>
+          <p className="text-sm text-blue-800">
+            Un colchón de calidad dura 8-10 años. Divide el precio entre los días de uso 
+            para ver el coste real por noche de sueño reparador.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 };

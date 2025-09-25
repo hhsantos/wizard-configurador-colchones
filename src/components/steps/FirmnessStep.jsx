@@ -89,7 +89,7 @@ const FirmnessStep = () => {
                     </div>
                     <div className={cn(
                       "w-8 h-8 rounded-full mx-auto flex items-center justify-center text-sm font-bold",
-                      isSelected ? "bg-purple-500 text-white" : "bg-gray-200 text-gray-600"
+                      isSelected ? "bg-purple-500 text-white" : "bg-gray-300 text-gray-800"
                     )}>
                       {level.value}
                     </div>
