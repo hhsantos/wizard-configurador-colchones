@@ -1,4 +1,4 @@
-import Button from '../ui/Button';
+import { Button } from '@/components/ui/button';
 import { useWizard } from '../../contexts/WizardContext';
 
 const WelcomeStep = () => {
@@ -9,28 +9,41 @@ const WelcomeStep = () => {
   };
 
   return (
-    <div className="welcome-step">
-      <div className="welcome-content">
-        <h3 className="welcome-subtitle">
+    <div className="text-center space-y-6">
+      <div className="max-w-2xl mx-auto">
+        <h3 className="text-2xl font-semibold text-gray-900 mb-4">
           Encuentra tu colchón perfecto en solo 8 pasos
         </h3>
-        <p className="welcome-description">
+        <p className="text-gray-600 mb-6 text-lg leading-relaxed">
           Te ayudaremos a elegir el colchón ideal basado en tus preferencias de sueño, 
           postura, firmeza y necesidades específicas. Solo te tomará unos minutos.
         </p>
-        <ul className="welcome-features">
-          <li>✅ Recomendaciones personalizadas</li>
-          <li>✅ Basado en tu estilo de vida</li>
-          <li>✅ Análisis de materiales y tecnologías</li>
-          <li>✅ Opciones para todo presupuesto</li>
+        <ul className="text-left space-y-3 mb-8 max-w-md mx-auto">
+          <li className="flex items-center text-gray-700">
+            <span className="text-green-500 mr-3">✅</span> 
+            Recomendaciones personalizadas
+          </li>
+          <li className="flex items-center text-gray-700">
+            <span className="text-green-500 mr-3">✅</span> 
+            Basado en tu estilo de vida
+          </li>
+          <li className="flex items-center text-gray-700">
+            <span className="text-green-500 mr-3">✅</span> 
+            Análisis de materiales y tecnologías
+          </li>
+          <li className="flex items-center text-gray-700">
+            <span className="text-green-500 mr-3">✅</span> 
+            Opciones para todo presupuesto
+          </li>
         </ul>
       </div>
-      <div className="welcome-actions">
+      <div>
         <Button 
-          variant="primary" 
-          size="large"
+          variant="default" 
+          size="lg"
           onClick={handleStart}
           aria-label="Comenzar configuración del colchón"
+          className="px-8 py-3"
         >
           Comenzar
         </Button>

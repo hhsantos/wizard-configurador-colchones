@@ -71,43 +71,26 @@ const WizardContainer = () => {
   }
 
   return (
-    <div className="wizard-container">
+    <div className="max-w-3xl mx-auto px-5 min-h-screen flex flex-col">
       {/* Skip to content link - AGENTS.md requirement */}
       <a 
         href="#main-content" 
-        className="skip-link"
-        style={{
-          position: 'absolute',
-          left: '-9999px',
-          zIndex: 999,
-          padding: '8px 16px',
-          background: '#000',
-          color: '#fff',
-          textDecoration: 'none'
-        }}
-        onFocus={(e) => {
-          e.target.style.left = '8px';
-          e.target.style.top = '8px';
-        }}
-        onBlur={(e) => {
-          e.target.style.left = '-9999px';
-        }}
+        className="sr-only focus:not-sr-only fixed left-2 top-2 z-[999] px-4 py-2 bg-black text-white no-underline rounded"
       >
         Saltar al contenido principal
       </a>
 
-      <header className="wizard-header">
-        <h1 className="wizard-title">Configurador de Colchones</h1>
+      <header className="mb-8 text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">Configurador de Colchones</h1>
         <ProgressIndicator />
       </header>
       
       <main 
         id="main-content"
         role="main" 
-        className="wizard-main"
+        className="flex-1"
         tabIndex="-1"
         aria-label={`Paso actual: ${stepTitle}`}
-        // AGENTS.md: scroll-margin-top for anchored links
         style={{ scrollMarginTop: '2rem' }}
       >
         <WizardStep title={stepTitle}>

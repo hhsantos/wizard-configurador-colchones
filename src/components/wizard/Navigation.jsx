@@ -1,5 +1,5 @@
 import { useWizard, STEPS } from '../../contexts/WizardContext';
-import Button from '../ui/Button';
+import { Button } from '@/components/ui/button';
 
 const Navigation = () => {
   const { currentStep, goBack, goToStep, stepHistory, answers } = useWizard();
@@ -67,10 +67,10 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="wizard-navigation" role="navigation" aria-label="Navegación del wizard">
-      <div className="nav-buttons">
+    <nav className="mt-8 pt-6 border-t border-gray-200" role="navigation" aria-label="Navegación del wizard">
+      <div className="flex justify-between gap-4">
         <Button
-          variant="secondary"
+          variant="outline"
           onClick={handleBack}
           disabled={isFirstStep}
           aria-label={isFirstStep ? "Primer paso, no se puede retroceder" : "Volver al paso anterior"}
@@ -81,7 +81,7 @@ const Navigation = () => {
         
         {!isLastStep && (
           <Button
-            variant="primary"
+            variant="default"
             onClick={handleNext}
             disabled={!canProceed()}
             aria-label={
@@ -98,7 +98,7 @@ const Navigation = () => {
         
         {isLastStep && (
           <Button
-            variant="primary"
+            variant="default"
             onClick={() => {
               // AGENTS.md: Links are links—use <a>/<Link> for navigation  
               // But this is an action, so button is appropriate
@@ -115,17 +115,15 @@ const Navigation = () => {
       {!isLastStep && !canProceed() && (
         <div 
           id="next-button-help" 
-          className="nav-help" 
+          className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded text-sm text-yellow-800" 
           aria-live="polite"
           role="status"
         >
-          <small>
-            {currentStep === STEPS.SLEEP_SITUATION && "Selecciona cómo duermes para continuar"}
-            {currentStep === STEPS.SLEEP_POSITION && "Elige al menos una posición de sueño"}
-            {currentStep === STEPS.FIRMNESS && "Selecciona tu nivel de firmeza preferido"}
-            {currentStep === STEPS.MATERIALS && "Elige el material que prefieres"}
-            {currentStep === STEPS.BUDGET && "Indica tu rango de presupuesto"}
-          </small>
+          {currentStep === STEPS.SLEEP_SITUATION && "Selecciona cómo duermes para continuar"}
+          {currentStep === STEPS.SLEEP_POSITION && "Elige al menos una posición de sueño"}
+          {currentStep === STEPS.FIRMNESS && "Selecciona tu nivel de firmeza preferido"}
+          {currentStep === STEPS.MATERIALS && "Elige el material que prefieres"}
+          {currentStep === STEPS.BUDGET && "Indica tu rango de presupuesto"}
         </div>
       )}
     </nav>

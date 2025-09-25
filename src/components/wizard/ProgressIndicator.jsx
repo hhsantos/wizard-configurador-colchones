@@ -1,4 +1,5 @@
 import { useWizard, STEPS } from '../../contexts/WizardContext';
+import { Progress } from '@/components/ui/progress';
 
 const stepTitles = {
   [STEPS.WELCOME]: 'Bienvenido',
@@ -31,30 +32,15 @@ const ProgressIndicator = () => {
   };
 
   return (
-    <div className="progress-indicator">
+    <div className="my-4">
       {/* AGENTS.md: Use polite aria-live for progress updates */}
-      <div 
-        role="progressbar" 
-        aria-valuenow={Math.round(progress)} 
-        aria-valuemin="0" 
-        aria-valuemax="100"
+      <Progress 
+        value={progress} 
+        className="mb-4"
         aria-label={`Progreso del configurador: ${Math.round(progress)}% completado`}
-      >
-        <div className="progress-bar">
-          <div 
-            className="progress-fill" 
-            style={{ 
-              width: `${progress}%`,
-              // AGENTS.md: Animate compositor-friendly props
-              transform: 'translateZ(0)',
-              transition: 'width 0.3s ease-out'
-            }}
-            aria-hidden="true"
-          />
-        </div>
-      </div>
+      />
       
-      <div className="progress-steps" role="tablist" aria-label="Pasos del configurador">
+      <div className="flex justify-center gap-2 mb-4" role="tablist" aria-label="Pasos del configurador">
         {allSteps.map((step, index) => {
           const isCompleted = stepHistory.includes(step) && step !== currentStep;
           const isCurrent = step === currentStep;
@@ -66,18 +52,16 @@ const ProgressIndicator = () => {
               role="tab"
               aria-selected={isCurrent}
               aria-disabled={!isAccessible}
-              className={`progress-step ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${!isAccessible ? 'disabled' : ''}`}
+              className={`
+                min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full border-2 text-sm font-medium
+                ${isCompleted ? 'bg-green-500 border-green-500 text-white' : ''}
+                ${isCurrent ? 'bg-blue-500 border-blue-500 text-white' : ''}
+                ${!isAccessible ? 'bg-gray-200 border-gray-300 text-gray-400' : ''}
+                ${isAccessible && !isCurrent && !isCompleted ? 'bg-white border-gray-300 text-gray-700' : ''}
+              `}
               aria-label={`Paso ${stepLabels[step]}${isCompleted ? ' completado' : isCurrent ? ' actual' : isAccessible ? ' disponible' : ' no disponible'}`}
-              // AGENTS.md: Hit target ≥24px (mobile ≥44px)
-              style={{
-                minHeight: '44px',
-                minWidth: '44px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
             >
-              <span className="step-number" aria-hidden="true">
+              <span aria-hidden="true">
                 {isCompleted ? '✓' : stepLabels[step]}
               </span>
             </div>
@@ -86,7 +70,7 @@ const ProgressIndicator = () => {
       </div>
       
       {/* AGENTS.md: Use polite aria-live for toasts/inline validation */}
-      <p className="progress-text" aria-live="polite" aria-atomic="true">
+      <p className="text-center text-sm text-gray-600" aria-live="polite" aria-atomic="true">
         Paso {currentStepIndex + 1} de {totalSteps}: {stepTitles[currentStep] || 'Cargando...'}
       </p>
     </div>
