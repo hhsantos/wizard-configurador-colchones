@@ -1,5 +1,6 @@
 import { useWizard, STEPS } from '../../contexts/WizardContext';
 import { Button } from '@/components/ui/button';
+import { ROUTES, VALIDATION_MESSAGES } from '@/constants/app';
 
 const Navigation = () => {
   const { currentStep, goBack, goToStep, answers } = useWizard();
@@ -100,7 +101,7 @@ const Navigation = () => {
             onClick={() => {
               // AGENTS.md: Links are links—use <a>/<Link> for navigation  
               // But this is an action, so button is appropriate
-              window.location.href = '/productos';
+              window.location.href = ROUTES.PRODUCTOS;
             }}
             aria-label="Ver productos recomendados"
           >
@@ -117,11 +118,11 @@ const Navigation = () => {
           aria-live="polite"
           role="status"
         >
-          {currentStep === STEPS.SLEEP_SITUATION && "Selecciona cómo duermes para continuar"}
-          {currentStep === STEPS.SLEEP_POSITION && "Elige al menos una posición de sueño"}
-          {currentStep === STEPS.FIRMNESS && "Selecciona tu nivel de firmeza preferido"}
-          {currentStep === STEPS.MATERIALS && "Elige el material que prefieres"}
-          {currentStep === STEPS.BUDGET && "Indica tu rango de presupuesto"}
+          {currentStep === STEPS.SLEEP_SITUATION && VALIDATION_MESSAGES.SLEEP_SITUATION}
+          {currentStep === STEPS.SLEEP_POSITION && VALIDATION_MESSAGES.SLEEP_POSITION}
+          {currentStep === STEPS.FIRMNESS && VALIDATION_MESSAGES.FIRMNESS}
+          {currentStep === STEPS.MATERIALS && VALIDATION_MESSAGES.MATERIALS}
+          {currentStep === STEPS.BUDGET && VALIDATION_MESSAGES.BUDGET}
         </div>
       )}
     </nav>
