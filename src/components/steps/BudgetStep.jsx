@@ -75,6 +75,8 @@ const BudgetStep = () => {
           {budgetRanges.map((budget) => {
             const isSelected = answers.budget === budget.value;
             const isNoLimit = budget.value === 'sin-limite';
+            const titleId = `budget-title-${budget.value}`;
+            const descId = `budget-desc-${budget.value}`;
             
             return (
               <Card
@@ -83,7 +85,10 @@ const BudgetStep = () => {
                   "cursor-pointer transition-all duration-200 min-h-[200px]",
                   "hover:shadow-lg hover:scale-105",
                   "border-2",
+                  "focus-visible:outline-none focus-visible:ring-4 focus-visible:border-emerald-500",
                   isNoLimit && "border-dashed",
+                  isNoLimit && "focus-visible:ring-gray-500/50",
+                  !isNoLimit && "focus-visible:ring-emerald-500/50",
                   isSelected 
                     ? isNoLimit
                       ? "border-gray-500 bg-gray-50 shadow-lg"
@@ -91,6 +96,17 @@ const BudgetStep = () => {
                     : "border-gray-200 hover:border-gray-300"
                 )}
                 onClick={() => handleBudgetChange(budget.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleBudgetChange(budget.value);
+                  }
+                }}
+                role="radio"
+                aria-checked={isSelected}
+                aria-labelledby={titleId}
+                aria-describedby={descId}
+                tabIndex={0}
                 style={{ touchAction: 'manipulation' }}
               >
                 <CardHeader className="pb-3">
@@ -101,13 +117,15 @@ const BudgetStep = () => {
                     checked={isSelected}
                     onChange={() => handleBudgetChange(budget.value)}
                     className="sr-only"
+                    tabIndex={-1}
+                    aria-hidden="true"
                   />
                   <div className="flex items-center gap-3">
                     <div className="text-2xl" aria-hidden="true">
                       {budget.icon}
                     </div>
                     <div className="flex-1">
-                      <CardTitle className="text-lg font-semibold text-gray-900">
+                      <CardTitle id={titleId} className="text-lg font-semibold text-gray-900">
                         {budget.title}
                       </CardTitle>
                       <p className={cn(
@@ -131,7 +149,7 @@ const BudgetStep = () => {
                 </CardHeader>
                 
                 <CardContent className="pt-0 space-y-3">
-                  <p className="text-sm text-gray-600">
+                  <p id={descId} className="text-sm text-gray-600">
                     {budget.description}
                   </p>
                   

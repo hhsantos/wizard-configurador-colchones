@@ -44,6 +44,8 @@ const SleepSituationStep = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {options.map((option) => {
             const isSelected = answers.sleepSituation === option.value;
+            const titleId = `situation-title-${option.value}`;
+            const descId = `situation-desc-${option.value}`;
             
             return (
               <Card
@@ -52,11 +54,23 @@ const SleepSituationStep = () => {
                   "cursor-pointer transition-all duration-200 min-h-[120px]",
                   "hover:shadow-md hover:scale-105",
                   "border-2",
+                  "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 focus-visible:border-blue-500",
                   isSelected 
                     ? "border-blue-500 bg-blue-50 shadow-md" 
                     : "border-gray-200 hover:border-gray-300"
                 )}
                 onClick={() => handleSituationChange(option.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleSituationChange(option.value);
+                  }
+                }}
+                role="radio"
+                aria-checked={isSelected}
+                aria-labelledby={titleId}
+                aria-describedby={descId}
+                tabIndex={0}
                 // AGENTS.md: Touch targets ≥44px mobile
                 style={{ touchAction: 'manipulation' }}
               >
@@ -68,22 +82,17 @@ const SleepSituationStep = () => {
                     checked={isSelected}
                     onChange={() => handleSituationChange(option.value)}
                     className="sr-only"
-                    // AGENTS.md: Keyboard support
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleSituationChange(option.value);
-                      }
-                    }}
+                    tabIndex={-1}
+                    aria-hidden="true"
                   />
                   <div className="space-y-2">
                     <div className="text-3xl mb-2" aria-hidden="true">
                       {option.icon}
                     </div>
-                    <h4 className="font-medium text-gray-900">
+                    <h4 id={titleId} className="font-medium text-gray-900">
                       {option.title}
                     </h4>
-                    <p className="text-sm text-gray-600">
+                    <p id={descId} className="text-sm text-gray-600">
                       {option.description}
                     </p>
                     {isSelected && (

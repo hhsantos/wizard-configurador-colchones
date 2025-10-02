@@ -70,6 +70,8 @@ const MaterialsStep = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {materials.map((material) => {
             const isSelected = answers.materialPreference === material.value;
+            const titleId = `material-title-${material.value}`;
+            const descId = `material-desc-${material.value}`;
             
             return (
               <Card
@@ -78,11 +80,23 @@ const MaterialsStep = () => {
                   "cursor-pointer transition-all duration-200 min-h-[280px]",
                   "hover:shadow-lg hover:scale-105",
                   "border-2",
+                  "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500/50 focus-visible:border-indigo-500",
                   isSelected 
                     ? "border-indigo-500 bg-indigo-50 shadow-lg" 
                     : "border-gray-200 hover:border-gray-300"
                 )}
                 onClick={() => handleMaterialChange(material.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleMaterialChange(material.value);
+                  }
+                }}
+                role="radio"
+                aria-checked={isSelected}
+                aria-labelledby={titleId}
+                aria-describedby={descId}
+                tabIndex={0}
                 style={{ touchAction: 'manipulation' }}
               >
                 <CardHeader className="pb-3">
@@ -93,16 +107,18 @@ const MaterialsStep = () => {
                     checked={isSelected}
                     onChange={() => handleMaterialChange(material.value)}
                     className="sr-only"
+                    tabIndex={-1}
+                    aria-hidden="true"
                   />
                   <div className="flex items-center gap-3">
                     <div className="text-3xl" aria-hidden="true">
                       {material.icon}
                     </div>
                     <div className="flex-1">
-                      <CardTitle className="text-lg font-semibold text-gray-900">
+                      <CardTitle id={titleId} className="text-lg font-semibold text-gray-900">
                         {material.title}
                       </CardTitle>
-                      <p className="text-sm text-gray-600 mt-1">
+                      <p id={descId} className="text-sm text-gray-600 mt-1">
                         {material.description}
                       </p>
                     </div>
