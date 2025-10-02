@@ -59,6 +59,8 @@ const FirmnessStep = () => {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
           {firmnessLevels.map((level) => {
             const isSelected = answers.firmness === level.value;
+            const titleId = `firmness-title-${level.value}`;
+            const descId = `firmness-desc-${level.value}`;
             
             return (
               <Card
@@ -67,11 +69,23 @@ const FirmnessStep = () => {
                   "cursor-pointer transition-all duration-200 min-h-[160px]",
                   "hover:shadow-md hover:scale-105",
                   "border-2 relative",
+                  "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-purple-500/50 focus-visible:border-purple-500",
                   isSelected 
                     ? "border-purple-500 bg-purple-50 shadow-md" 
                     : "border-gray-200 hover:border-gray-300"
                 )}
                 onClick={() => handleFirmnessChange(level.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleFirmnessChange(level.value);
+                  }
+                }}
+                role="radio"
+                aria-checked={isSelected}
+                aria-labelledby={titleId}
+                aria-describedby={descId}
+                tabIndex={0}
                 style={{ touchAction: 'manipulation' }}
               >
                 <CardContent className="p-3 text-center h-full flex flex-col justify-between">
@@ -82,6 +96,8 @@ const FirmnessStep = () => {
                     checked={isSelected}
                     onChange={() => handleFirmnessChange(level.value)}
                     className="sr-only"
+                    tabIndex={-1}
+                    aria-hidden="true"
                   />
                   <div className="space-y-2">
                     <div className="text-2xl mb-2" aria-hidden="true">
@@ -95,10 +111,10 @@ const FirmnessStep = () => {
                     </div>
                   </div>
                   <div className="space-y-1">
-                    <h4 className="font-medium text-gray-900 text-sm">
+                    <h4 id={titleId} className="font-medium text-gray-900 text-sm">
                       {level.title}
                     </h4>
-                    <p className="text-xs text-gray-600">
+                    <p id={descId} className="text-xs text-gray-600">
                       {level.description}
                     </p>
                     <small className="text-xs text-purple-600 italic block">

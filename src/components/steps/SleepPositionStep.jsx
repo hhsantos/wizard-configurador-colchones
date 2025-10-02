@@ -69,6 +69,8 @@ const SleepPositionStep = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {positions.map((position) => {
             const isSelected = selectedPositions.includes(position.value);
+            const titleId = `position-title-${position.value}`;
+            const descId = `position-desc-${position.value}`;
             
             return (
               <Card
@@ -77,11 +79,23 @@ const SleepPositionStep = () => {
                   "cursor-pointer transition-all duration-200 min-h-[140px]",
                   "hover:shadow-md hover:scale-105",
                   "border-2 relative",
+                  "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-green-500/50 focus-visible:border-green-500",
                   isSelected 
                     ? "border-green-500 bg-green-50 shadow-md" 
                     : "border-gray-200 hover:border-gray-300"
                 )}
                 onClick={() => handlePositionToggle(position.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handlePositionToggle(position.value);
+                  }
+                }}
+                role="checkbox"
+                aria-checked={isSelected}
+                aria-labelledby={titleId}
+                aria-describedby={descId}
+                tabIndex={0}
                 style={{ touchAction: 'manipulation' }}
               >
                 <CardContent className="p-4">
@@ -92,6 +106,8 @@ const SleepPositionStep = () => {
                     checked={isSelected}
                     onChange={() => handlePositionToggle(position.value)}
                     className="sr-only"
+                    tabIndex={-1}
+                    aria-hidden="true"
                   />
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
@@ -107,10 +123,10 @@ const SleepPositionStep = () => {
                       )}
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-900 mb-1">
+                      <h4 id={titleId} className="font-medium text-gray-900 mb-1">
                         {position.title}
                       </h4>
-                      <p className="text-sm text-gray-600 mb-2">
+                      <p id={descId} className="text-sm text-gray-600 mb-2">
                         {position.description}
                       </p>
                       <small className="text-xs text-blue-600 italic">
