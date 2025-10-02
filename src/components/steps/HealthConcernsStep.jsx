@@ -91,6 +91,8 @@ const HealthConcernsStep = () => {
           {healthConcerns.map((concern) => {
             const isSelected = selectedConcerns.includes(concern.value);
             const isNone = concern.value === 'ninguno';
+            const titleId = `concern-title-${concern.value}`;
+            const descId = `concern-desc-${concern.value}`;
             
             return (
               <Card
@@ -99,7 +101,10 @@ const HealthConcernsStep = () => {
                   "cursor-pointer transition-all duration-200 min-h-[140px]",
                   "hover:shadow-md hover:scale-105",
                   "border-2 relative",
+                  "focus-visible:outline-none focus-visible:ring-4",
                   isNone && "border-dashed",
+                  isNone && "focus-visible:ring-gray-500/50",
+                  !isNone && "focus-visible:ring-red-500/50 focus-visible:border-red-500",
                   isSelected 
                     ? isNone 
                       ? "border-gray-500 bg-gray-50 shadow-md"
@@ -107,6 +112,17 @@ const HealthConcernsStep = () => {
                     : "border-gray-200 hover:border-gray-300"
                 )}
                 onClick={() => handleConcernToggle(concern.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleConcernToggle(concern.value);
+                  }
+                }}
+                role="checkbox"
+                aria-checked={isSelected}
+                aria-labelledby={titleId}
+                aria-describedby={descId}
+                tabIndex={0}
                 style={{ touchAction: 'manipulation' }}
               >
                 <CardContent className="p-4">
@@ -117,6 +133,8 @@ const HealthConcernsStep = () => {
                     checked={isSelected}
                     onChange={() => handleConcernToggle(concern.value)}
                     className="sr-only"
+                    tabIndex={-1}
+                    aria-hidden="true"
                   />
                   <div className="space-y-3 h-full flex flex-col">
                     <div className="flex items-center justify-between">
@@ -135,10 +153,10 @@ const HealthConcernsStep = () => {
                       )}
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-medium text-gray-900 mb-1">
+                      <h4 id={titleId} className="font-medium text-gray-900 mb-1">
                         {concern.title}
                       </h4>
-                      <p className="text-sm text-gray-600 mb-2">
+                      <p id={descId} className="text-sm text-gray-600 mb-2">
                         {concern.description}
                       </p>
                       <small className={cn(

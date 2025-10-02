@@ -9,7 +9,7 @@ const DarkModeToggle = ({ className = "" }) => {
       variant="outline"
       size="sm"
       onClick={toggleDarkMode}
-      className={`relative w-12 h-6 p-0 transition-all duration-300 ${className}`}
+      className={`relative w-14 h-8 md:w-12 md:h-6 p-0 transition-all duration-300 ${className}`}
       aria-label={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
       role="switch"
       aria-checked={isDark}
@@ -25,7 +25,7 @@ const DarkModeToggle = ({ className = "" }) => {
       
       {/* Círculo que se mueve */}
       <div className={`
-        absolute top-0.5 w-5 h-5 rounded-full transition-all duration-300 transform
+        absolute top-0.5 w-7 h-7 md:w-5 md:h-5 rounded-full transition-all duration-300 transform
         flex items-center justify-center text-xs
         ${isDark
           ? 'translate-x-6 bg-primary text-primary-foreground shadow-lg'

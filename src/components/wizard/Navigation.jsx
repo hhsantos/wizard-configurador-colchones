@@ -1,11 +1,10 @@
 import { useWizard, STEPS } from '../../contexts/WizardContext';
 import { Button } from '@/components/ui/button';
+import { ROUTES, VALIDATION_MESSAGES } from '@/constants/app';
 
 const Navigation = () => {
-  const { currentStep, goBack, goToStep, stepHistory, answers } = useWizard();
+  const { currentStep, goBack, goToStep, answers } = useWizard();
   
-  const allSteps = Object.values(STEPS);
-  const currentStepIndex = allSteps.indexOf(currentStep);
   const isFirstStep = currentStep === STEPS.WELCOME;
   const isLastStep = currentStep === STEPS.SUMMARY;
   
@@ -102,7 +101,7 @@ const Navigation = () => {
             onClick={() => {
               // AGENTS.md: Links are links—use <a>/<Link> for navigation  
               // But this is an action, so button is appropriate
-              window.location.href = '/productos';
+              window.location.href = ROUTES.PRODUCTOS;
             }}
             aria-label="Ver productos recomendados"
           >
@@ -115,15 +114,15 @@ const Navigation = () => {
       {!isLastStep && !canProceed() && (
         <div 
           id="next-button-help" 
-          className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded text-sm text-yellow-800 dark:text-yellow-200" 
+          className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-600 rounded text-sm text-yellow-900 dark:text-yellow-100" 
           aria-live="polite"
           role="status"
         >
-          {currentStep === STEPS.SLEEP_SITUATION && "Selecciona cómo duermes para continuar"}
-          {currentStep === STEPS.SLEEP_POSITION && "Elige al menos una posición de sueño"}
-          {currentStep === STEPS.FIRMNESS && "Selecciona tu nivel de firmeza preferido"}
-          {currentStep === STEPS.MATERIALS && "Elige el material que prefieres"}
-          {currentStep === STEPS.BUDGET && "Indica tu rango de presupuesto"}
+          {currentStep === STEPS.SLEEP_SITUATION && VALIDATION_MESSAGES.SLEEP_SITUATION}
+          {currentStep === STEPS.SLEEP_POSITION && VALIDATION_MESSAGES.SLEEP_POSITION}
+          {currentStep === STEPS.FIRMNESS && VALIDATION_MESSAGES.FIRMNESS}
+          {currentStep === STEPS.MATERIALS && VALIDATION_MESSAGES.MATERIALS}
+          {currentStep === STEPS.BUDGET && VALIDATION_MESSAGES.BUDGET}
         </div>
       )}
     </nav>
