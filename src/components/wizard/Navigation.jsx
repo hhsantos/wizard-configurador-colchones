@@ -2,10 +2,8 @@ import { useWizard, STEPS } from '../../contexts/WizardContext';
 import { Button } from '@/components/ui/button';
 
 const Navigation = () => {
-  const { currentStep, goBack, goToStep, stepHistory, answers } = useWizard();
+  const { currentStep, goBack, goToStep, answers } = useWizard();
   
-  const allSteps = Object.values(STEPS);
-  const currentStepIndex = allSteps.indexOf(currentStep);
   const isFirstStep = currentStep === STEPS.WELCOME;
   const isLastStep = currentStep === STEPS.SUMMARY;
   

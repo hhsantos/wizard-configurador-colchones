@@ -1,16 +1,8 @@
 import { createContext, useContext, useReducer } from 'react';
+import { STEPS } from '../constants/steps';
 
-// Pasos del wizard
-export const STEPS = {
-  WELCOME: 'welcome',
-  SLEEP_SITUATION: 'sleep-situation',
-  SLEEP_POSITION: 'sleep-position',
-  FIRMNESS: 'firmness',
-  HEALTH_CONCERNS: 'health-concerns',
-  MATERIALS: 'materials',
-  BUDGET: 'budget',
-  SUMMARY: 'summary'
-};
+// Re-export STEPS for backward compatibility
+export { STEPS };
 
 // Estado inicial
 const initialState = {
@@ -41,7 +33,7 @@ const wizardReducer = (state, action) => {
         }
       };
     
-    case 'GO_TO_STEP':
+    case 'GO_TO_STEP': {
       const newHistory = [...state.stepHistory];
       if (!newHistory.includes(action.step)) {
         newHistory.push(action.step);
@@ -51,14 +43,16 @@ const wizardReducer = (state, action) => {
         currentStep: action.step,
         stepHistory: newHistory
       };
+    }
     
-    case 'GO_BACK':
+    case 'GO_BACK': {
       const currentIndex = state.stepHistory.indexOf(state.currentStep);
       const previousStep = currentIndex > 0 ? state.stepHistory[currentIndex - 1] : state.currentStep;
       return {
         ...state,
         currentStep: previousStep
       };
+    }
     
     case 'SET_RECOMMENDATIONS':
       return {
